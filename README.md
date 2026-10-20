@@ -6,6 +6,30 @@ Ember is a heat-aware food-delivery intelligence layer designed to predict wheth
 
 > **Core idea:** Don't measure food temperature after the problem happens. Predict the risk of a cold meal before it reaches the customer.
 
+## Quickstart
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+uvicorn app.main:app --reload   # interactive docs: http://localhost:8000/docs
+```
+
+Docker: `docker build -t ember . && docker run -p 8000:8000 ember`
+Quality gate: `ruff check . && ruff format --check . && mypy app && pytest`
+Calibrate with real probe data: `python -m app.ml.calibrate measurements.csv` (see `docs/measurement-protocol.md`)
+Context for AI agents and contributors: `AGENTS.md`, `docs/NEXT.md`
+
+## Status and honesty
+
+Ember v0.1 predicts with **Newton's law of cooling** (`app/services/cooling.py`), not machine learning.
+
+- Cooling constants (packaging half-lives, food factors) are **assumed until you calibrate them** with real probe measurements (`app/ml/calibrate.py`). The calibration code is verified on synthetic data only, which proves the code, not real-world accuracy.
+- The 57 C threshold is the FDA Food Code hot-holding minimum, a safety anchor rather than a measure of what customers call hot. See `docs/model-card.md`.
+- `heat_risk` is P(arrival temperature < serving minimum) under a Normal uncertainty band. It expresses model uncertainty, not measured accuracy.
+- `risk_factors` use leave-one-out attribution (re-run the model with one factor fixed). Contributions overlap, so they do not sum to the risk.
+- A customer's `cold` rating always goes to `refund_review`. The model only reports whether it agrees. Ratings are **not persisted yet**.
+- Persistence and any ML on top of physics come next (see `docs/NEXT.md`). ML ships only if it beats calibrated physics on held-out real data.
+
 ## Why Ember?
 
 Food can leave a restaurant hot and still arrive cold because of preparation time, pickup delays, rider travel time, traffic, weather, packaging, restaurant-to-customer distance, and batching.
@@ -30,7 +54,7 @@ The first version should stay brutally simple:
 1. Customer/order data enters Ember.
 2. Ember calculates a **Cold Food Risk Score**.
 3. The system identifies the main risk factors.
-4. A recommendation is generated: `none`, `nudge`, `priority`, or `refund review`.
+4. A recommendation is generated: `none`, `nudge`, or `priority_pickup`. A customer `cold` rating is routed to `refund_review`.
 5. The customer can submit a post-delivery heat rating.
 6. Ratings feed the prediction model and restaurant analytics.
 
@@ -99,8 +123,10 @@ Ember/
 ├── app/
 │   ├── api/                 # HTTP/API routes
 │   ├── core/                # Configuration and shared infrastructure
+│   ├── ml/                  # Calibration from measured data
 │   ├── models/              # Domain and API schemas
 │   ├── services/            # Business logic
+│   │   ├── cooling.py
 │   │   ├── heat_prediction.py
 │   │   ├── delay_analysis.py
 │   │   ├── refund_engine.py
@@ -168,10 +194,17 @@ Example response:
 
 ```json
 {
-  "heat_risk": 0.82,
+  "heat_risk": 0.705,
   "risk_level": "high",
   "expected_state": "lukewarm_or_cold",
-  "recommended_action": "priority_pickup"
+  "recommended_action": "priority_pickup",
+  "predicted_arrival_temp_c": 54.3,
+  "primary_risk_factor": "packaging",
+  "risk_factors": [
+    {"name": "packaging", "contribution": 0.526},
+    {"name": "delivery_duration", "contribution": 0.454},
+    {"name": "pickup_delay", "contribution": 0.218}
+  ]
 }
 ```
 
@@ -185,35 +218,39 @@ POST /api/v1/ratings
 {
   "order_id": "ord_123",
   "temperature_rating": "cold",
-  "packaging_rating": 2
+  "packaging_rating": 2,
+  "predicted_heat_risk": 0.82
 }
 ```
+
+`predicted_heat_risk` is optional. Response: `{"order_id": "ord_123", "temperature_rating": "cold", "refund_decision": "refund_review", "model_corroborated": true}`
 
 ## Development Roadmap
 
 ### Phase 1 — Foundation
 
 - [x] Repository created
-- [ ] Project structure
-- [ ] FastAPI service
-- [ ] Health endpoint
-- [ ] Order schema
-- [ ] Heat-risk API
+- [x] Project structure
+- [x] FastAPI service
+- [x] Health endpoint
+- [x] Order schema
+- [x] Heat-risk API
 
 ### Phase 2 — Prediction MVP
 
 - [ ] Synthetic order dataset
-- [ ] Baseline cooling model
+- [x] Baseline cooling model
 - [ ] Feature engineering
 - [ ] Baseline ML model
 - [ ] Evaluation pipeline
-- [ ] Explainable risk factors
+- [x] Explainable risk factors
 
 ### Phase 3 — Product Layer
 
 - [ ] Customer heat rating
 - [ ] Restaurant dashboard
-- [ ] Refund rules engine
+- [x] Refund rules engine
+- [x] Calibration pipeline (probe-data CSV to fitted constants)
 - [ ] Rider delay detection
 - [ ] Event logging
 
