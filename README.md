@@ -19,6 +19,35 @@ Quality gate: `ruff check . && ruff format --check . && mypy app && pytest`
 Calibrate with real probe data: `python -m app.ml.calibrate measurements.csv` (see `docs/measurement-protocol.md`)
 Context for AI agents and contributors: `AGENTS.md`, `docs/NEXT.md`
 
+
+
+## Try the interactive demo
+
+Start the API using the Quickstart command, then open **[Swagger UI](http://127.0.0.1:8000/docs)** in your browser. This is a local interactive demo; a public hosted deployment has not been verified.
+
+The current API exposes:
+
+- `POST /api/v1/predictions/heat-risk` — calculate heat risk from order and delivery inputs.
+- `POST /api/v1/ratings` — accept a customer temperature and packaging rating. Ratings are currently acknowledged but not persisted.
+
+Example heat-risk request:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/v1/predictions/heat-risk \
+  -H "Content-Type: application/json" \
+  -d '{
+    "restaurant_id": "demo-restaurant",
+    "food_category": "rice_meal",
+    "distance_km": 4.2,
+    "estimated_delivery_minutes": 28,
+    "pickup_delay_minutes": 8,
+    "packaging_type": "insulated_bag",
+    "ambient_temperature_c": 29
+  }'
+```
+
+The response includes a heat-risk value, risk level, expected temperature state, and recommended action. Use synthetic examples for the public demo; do not submit customer-identifying or sensitive delivery data.
+
 ## Status and honesty
 
 Ember v0.1 predicts with **Newton's law of cooling** (`app/services/cooling.py`), not machine learning.
