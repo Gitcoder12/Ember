@@ -30,7 +30,7 @@ class HeatRiskRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     restaurant_id: Identifier
-    food_category: str = Field(pattern=r"^[a-z][a-z0-9_-]{0,49}$")
+    food_category: str = Field(pattern=r"^[a-z0-9][a-z0-9_-]{0,49}$")
     distance_km: float = Field(ge=0, le=50, allow_inf_nan=False)
     estimated_delivery_minutes: int = Field(ge=0, le=240)
     pickup_delay_minutes: int = Field(ge=0, le=120)
@@ -46,6 +46,8 @@ class HeatRiskRequest(BaseModel):
 
     @model_validator(mode="after")
     def _check_speed_is_physical(self) -> Self:
+        if self.distance_km > 0 and self.estimated_delivery_minutes == 0:
+            raise ValueError("positive distance requires positive delivery time")
         hours = max(self.estimated_delivery_minutes, 1) / 60
         if self.distance_km / hours > MAX_PLAUSIBLE_SPEED_KMH:
             raise ValueError("distance_km and estimated_delivery_minutes imply an impossible speed")
