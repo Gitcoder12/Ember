@@ -114,7 +114,6 @@ def test_synthetic_generator_validates_inputs() -> None:
         generate_observations(5, seed=1, noise_sd_c=-1)
 
 
-
 def test_near_zero_fit_uncertainty_remains_loadable(tmp_path: Path) -> None:
     rows = generate_observations(120, seed=12, noise_sd_c=0.0)
     result = calibrate(rows, seed=4, bootstrap_rounds=0)
