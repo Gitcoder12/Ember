@@ -307,3 +307,8 @@ This section supplements the maintainer-authored README above; it does not repla
 - Preserve original probe measurements and project data. Never replace them with synthetic samples; clearly label and isolate fixtures.
 - Verify sensor units, calibration assumptions, data collection protocol, model validation, and uncertainty before making predictive-performance claims.
 - See [MODEL_AUDIT_ROUTER.md](MODEL_AUDIT_ROUTER.md) for independent model review and data-preservation rules.
+
+
+### Proposed local API walkthrough — open PR, not yet merged (2026-11-13)
+
+[PR #1](https://github.com/Gitcoder12/Ember/pull/1) proposes a local Swagger UI walkthrough for `POST /api/v1/predictions/heat-risk` and `POST /api/v1/ratings`. It explicitly states that a public hosted deployment has not been verified and that the request examples use synthetic demo values. Do not upload customer-identifying delivery data to a demo or claim real-world heat-prediction accuracy from synthetic calibration tests. Verify the API contract and current route behaviour on the exact PR head before merging.
