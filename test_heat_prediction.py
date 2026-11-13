@@ -132,7 +132,6 @@ def test_non_text_category_is_rejected_not_coerced() -> None:
         make_request(food_category=123)
 
 
-
 def test_digit_led_food_category_matches_calibration_labels() -> None:
     request = make_request(food_category="65 Chicken")
     assert request.food_category == "65_chicken"
