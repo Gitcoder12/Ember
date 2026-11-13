@@ -31,10 +31,13 @@ def create_app() -> FastAPI:
         request_id = getattr(request.state, "request_id", None)
         logger.exception("unhandled error request_id=%s", request_id)
         # Never leak exception details to clients; the request ID links to the server log.
-        return JSONResponse(
+        response = JSONResponse(
             status_code=500,
             content={"detail": "Internal server error", "request_id": request_id},
         )
+        if request_id:
+            response.headers["X-Request-ID"] = request_id
+        return response
 
     @application.get("/health", tags=["system"])
     def health() -> dict[str, str]:
