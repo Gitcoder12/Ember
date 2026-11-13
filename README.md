@@ -296,26 +296,14 @@ Ember is being developed incrementally. Start with the smallest useful component
 
 MIT © 2026 DHARAVATH SATVIK
 
+
 ---
 
-## Project handbook
+## AI-maintained project notes (secondary — 2026-11-13)
 
-- [Activity log](ACTIVITY_LOG.md)
-- [Feature upgrade plan](FEATURE_UPGRADE_PLAN.md)
-- [Company and team fit](COMPANY_FIT.md)
-- [Beginner and technical README draft](README_ADDENDUM_DRAFT.md)
-- [README quality checklist](README_QUALITY_CHECKLIST.md)
-- [Contribution guide](CONTRIBUTING.md)
-- [Agent skill map](SKILLS.md)
+This section supplements the maintainer-authored README above; it does not replace or certify the original claims.
 
-## Understanding the project
-
-### In plain language
-
-An early food-delivery intelligence service that aims to estimate whether a meal may arrive warm and identify where heat is lost during delivery.
-
-### Technical and research view
-
-Document the actual architecture, module boundaries, input formats, transformations, outputs, dependencies and failure behavior. Do not describe proposed components as implemented.
-
-For future work, see [FEATURE_UPGRADE_PLAN.md](FEATURE_UPGRADE_PLAN.md), [ACTIVITY_LOG.md](ACTIVITY_LOG.md), [COMPANY_FIT.md](COMPANY_FIT.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
+- Treat the current source tree and tests as the implementation source of truth. Planned calibration or prediction features are not shipped unless the code and reproducible tests demonstrate them.
+- Preserve original probe measurements and project data. Never replace them with synthetic samples; clearly label and isolate fixtures.
+- Verify sensor units, calibration assumptions, data collection protocol, model validation, and uncertainty before making predictive-performance claims.
+- See [MODEL_AUDIT_ROUTER.md](MODEL_AUDIT_ROUTER.md) for independent model review and data-preservation rules.
