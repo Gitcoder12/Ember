@@ -74,6 +74,7 @@ def test_one_half_life_halves_the_gap() -> None:
     temp = cooled_temperature_c(initial_c=70, ambient_c=30, minutes=40, half_life_min=40)
     assert temp == pytest.approx(50.0)
 
+
 @pytest.mark.parametrize(
     ("ambient_c", "initial_c"),
     [(-30.0, 75.0), (55.0, 75.0)],
@@ -121,8 +122,6 @@ def test_non_finite_cooling_inputs_are_rejected(field: str, value: float) -> Non
         (55.0, 55.0, float("nan")),
     ],
 )
-def test_probability_rejects_non_finite_inputs(
-    threshold: float, mean: float, sigma: float
-) -> None:
+def test_probability_rejects_non_finite_inputs(threshold: float, mean: float, sigma: float) -> None:
     with pytest.raises(ValueError, match="finite"):
         probability_below(threshold, mean, sigma)
