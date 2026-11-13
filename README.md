@@ -1,4 +1,4 @@
-# Ember 🔥
+# Ember 
 
 **Stop eating cold delivery food.**
 
@@ -38,14 +38,14 @@ Today's delivery experience mostly optimizes for **time and logistics**. Ember a
 
 ## What Ember Does
 
-- 🌡️ **Heat Risk Prediction** — estimates the probability that an order will arrive below an acceptable serving temperature.
-- ⏱️ **Delay Detection** — identifies orders spending too long between preparation, pickup, and delivery.
-- 📦 **Packaging Intelligence** — learns which restaurant/package combinations retain heat better.
-- 🛵 **Rider Delay Signals** — detects unusually slow delivery segments and surfaces actionable nudges.
-- 💸 **Cold-Meal Refund Automation** — supports rule-based or model-assisted refund decisions.
-- ⭐ **Crowdsourced Heat Ratings** — lets customers report whether food arrived hot, warm, lukewarm, or cold.
-- 📊 **Restaurant Heat Analytics** — shows restaurants where heat loss is occurring and which interventions help.
-- 🔌 **Delivery Platform Integration** — designed as an API/service that could sit alongside existing delivery platforms rather than replacing them.
+-  **Heat Risk Prediction** — estimates the probability that an order will arrive below an acceptable serving temperature.
+-  **Delay Detection** — identifies orders spending too long between preparation, pickup, and delivery.
+-  **Packaging Intelligence** — learns which restaurant/package combinations retain heat better.
+-  **Rider Delay Signals** — detects unusually slow delivery segments and surfaces actionable nudges.
+-  **Cold-Meal Refund Automation** — supports rule-based or model-assisted refund decisions.
+-  **Crowdsourced Heat Ratings** — lets customers report whether food arrived hot, warm, lukewarm, or cold.
+-  **Restaurant Heat Analytics** — shows restaurants where heat loss is occurring and which interventions help.
+-  **Delivery Platform Integration** — designed as an API/service that could sit alongside existing delivery platforms rather than replacing them.
 
 ## MVP
 
@@ -70,7 +70,7 @@ Pickup ETA + route + distance + weather
 ┌─────────────────────────────┐
 │     Ember Heat Engine        │
 │                             │
-│  Heat Risk: 82% 🔥          │
+│  Heat Risk: 82%           │
 │  Main risk: pickup delay    │
 │  Expected arrival: 38 min  │
 └─────────────────────────────┘
@@ -294,4 +294,4 @@ Ember is being developed incrementally. Start with the smallest useful component
 
 ## License
 
-MIT © 2026 DHARAVATH SATVIK
+MIT  2026 DHARAVATH SATVIK
