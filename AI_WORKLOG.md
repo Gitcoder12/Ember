@@ -28,3 +28,12 @@
 - Separate or remove legacy root-level duplicate source modules in a dedicated follow-up only after confirming no external scripts depend on them.
 - Real-world temperature calibration still requires independently collected probe data; synthetic tests do not establish field accuracy.
 - Rating persistence and a real-probe calibration workflow remain separate product issues.
+
+
+## 2026-11-13 — Calibration/API contract review fixes
+
+- Reject CSV packaging labels not supported by the prediction API; unsupported labels such as `vacuum bag` no longer produce unusable calibration parameters.
+- Validate normalized food-category labels against the same character/length contract used by the API.
+- Apply a 0.01 °C minimum numerical floor to calibrated temperature uncertainty, including serialized JSON and the human-readable report. This prevents a near-perfect fit from rounding uncertainty to zero and being rejected by the parameter loader.
+- Document supported packaging/category labels and clarify that the uncertainty floor is not a probe-accuracy guarantee.
+- Added regression tests for unsupported packaging/category labels and near-zero calibration uncertainty round-tripping through the parameter loader.
