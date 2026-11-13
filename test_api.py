@@ -41,6 +41,7 @@ def test_heat_risk_prediction_contract() -> None:
         {"unexpected_field": 1},
         {"restaurant_id": "../etc/passwd"},
         {"distance_km": 40, "estimated_delivery_minutes": 5},
+        {"distance_km": 0.5, "estimated_delivery_minutes": 0},
     ],
 )
 def test_invalid_payload_returns_422(overrides: dict[str, object]) -> None:
@@ -109,3 +110,4 @@ def test_unhandled_error_returns_generic_500(monkeypatch: pytest.MonkeyPatch) ->
     assert response.status_code == 500
     assert "secret" not in response.text
     assert response.json()["detail"] == "Internal server error"
+    assert response.headers["X-Request-ID"] == response.json()["request_id"]
