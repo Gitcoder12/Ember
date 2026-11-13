@@ -75,7 +75,10 @@ class CalibrationResult:
                 g.name: round(g.value, 2) for g in self.packaging if g.fitted
             },
             "category_factor": {g.name: round(g.value, 3) for g in self.categories if g.fitted},
-            "temp_uncertainty_c": round(self.parameters.temp_uncertainty_c or 0.0, 2),
+            "temp_uncertainty_c": max(
+                MIN_TEMP_UNCERTAINTY_C,
+                round(self.parameters.temp_uncertainty_c or 0.0, 2),
+            ),
             "metadata": {
                 "rows_used": self.rows_used,
                 "rows_rejected": self.rows_rejected,
@@ -280,7 +283,11 @@ def format_report(result: CalibrationResult) -> str:
             f"error on unseen 20%: {result.holdout_rmse_c:.2f} C   "
             f"(assumed defaults: {result.baseline_holdout_rmse_c:.2f} C)"
         )
-    lines.append(f"temp_uncertainty_c written: {result.parameters.temp_uncertainty_c:.2f}")
+    uncertainty = max(
+        MIN_TEMP_UNCERTAINTY_C,
+        round(result.parameters.temp_uncertainty_c or 0.0, 2),
+    )
+    lines.append(f"temp_uncertainty_c written: {uncertainty:.2f}")
     return "\n".join(lines)
 
 
