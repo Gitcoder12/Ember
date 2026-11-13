@@ -19,35 +19,6 @@ Quality gate: `ruff check . && ruff format --check . && mypy app && pytest`
 Calibrate with real probe data: `python -m app.ml.calibrate measurements.csv` (see `docs/measurement-protocol.md`)
 Context for AI agents and contributors: `AGENTS.md`, `docs/NEXT.md`
 
-
-
-## Try the interactive demo
-
-Start the API using the Quickstart command, then open **[Swagger UI](http://127.0.0.1:8000/docs)** in your browser. This is a local interactive demo; a public hosted deployment has not been verified.
-
-The current API exposes:
-
-- `POST /api/v1/predictions/heat-risk` — calculate heat risk from order and delivery inputs.
-- `POST /api/v1/ratings` — accept a customer temperature and packaging rating. Ratings are currently acknowledged but not persisted.
-
-Example heat-risk request:
-
-```bash
-curl -X POST http://127.0.0.1:8000/api/v1/predictions/heat-risk \
-  -H "Content-Type: application/json" \
-  -d '{
-    "restaurant_id": "demo-restaurant",
-    "food_category": "rice_meal",
-    "distance_km": 4.2,
-    "estimated_delivery_minutes": 28,
-    "pickup_delay_minutes": 8,
-    "packaging_type": "insulated_bag",
-    "ambient_temperature_c": 29
-  }'
-```
-
-The response includes a heat-risk value, risk level, expected temperature state, and recommended action. Use synthetic examples for the public demo; do not submit customer-identifying or sensitive delivery data.
-
 ## Status and honesty
 
 Ember v0.1 predicts with **Newton's law of cooling** (`app/services/cooling.py`), not machine learning.
@@ -324,3 +295,20 @@ Ember is being developed incrementally. Start with the smallest useful component
 ## License
 
 MIT © 2026 DHARAVATH SATVIK
+
+
+---
+
+## AI-maintained project notes (secondary — 2026-11-13)
+
+This section supplements the maintainer-authored README above; it does not replace or certify the original claims.
+
+- Treat the current source tree and tests as the implementation source of truth. Planned calibration or prediction features are not shipped unless the code and reproducible tests demonstrate them.
+- Preserve original probe measurements and project data. Never replace them with synthetic samples; clearly label and isolate fixtures.
+- Verify sensor units, calibration assumptions, data collection protocol, model validation, and uncertainty before making predictive-performance claims.
+- See [MODEL_AUDIT_ROUTER.md](MODEL_AUDIT_ROUTER.md) for independent model review and data-preservation rules.
+
+
+### Proposed local API walkthrough — open PR, not yet merged (2026-11-13)
+
+[PR #1](https://github.com/Gitcoder12/Ember/pull/1) proposes a local Swagger UI walkthrough for `POST /api/v1/predictions/heat-risk` and `POST /api/v1/ratings`. It explicitly states that a public hosted deployment has not been verified and that the request examples use synthetic demo values. Do not upload customer-identifying delivery data to a demo or claim real-world heat-prediction accuracy from synthetic calibration tests. Verify the API contract and current route behaviour on the exact PR head before merging.
