@@ -63,4 +63,4 @@ plugins = ["pydantic.mypy"]
 
 [tool.pytest.ini_options]
 testpaths = ["."]
-addopts = "--cov=app --cov-report=term-missing --cov-fail-under=90"
+addopts = "--cov=app --cov-report=term-missing --cov-fail-under=90 --import-mode=importlib"
