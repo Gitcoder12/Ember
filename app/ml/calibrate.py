@@ -28,6 +28,7 @@ HALF_LIFE_BOUNDS = (2.0, 1000.0)
 FACTOR_BOUNDS = (0.2, 5.0)
 HOLDOUT_FRACTION = 0.2
 MIN_HOLDOUT_ROWS = 5
+MIN_TEMP_UNCERTAINTY_C = 0.01
 DEFAULT_BOOTSTRAP_ROUNDS = 100
 _INV_PHI = (math.sqrt(5.0) - 1.0) / 2.0
 
@@ -246,7 +247,7 @@ def calibrate(
     degrees_of_freedom = max(len(observations) - n_params, 1)
     in_sample = _rmse(observations, fitted) * math.sqrt(len(observations) / degrees_of_freedom)
     # Use the larger of in-sample and holdout error so the stated uncertainty is never optimistic.
-    sigma = max(in_sample, holdout_rmse or 0.0)
+    sigma = max(in_sample, holdout_rmse or 0.0, MIN_TEMP_UNCERTAINTY_C)
     return CalibrationResult(
         parameters=replace(fitted, temp_uncertainty_c=sigma),
         packaging=packaging_fits,
