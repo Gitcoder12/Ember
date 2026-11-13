@@ -105,6 +105,14 @@ def load_parameters(path: Path) -> CoolingParameters:
 def cooled_temperature_c(
     *, initial_c: float, ambient_c: float, minutes: float, half_life_min: float
 ) -> float:
+    values = {
+        "initial_c": initial_c,
+        "ambient_c": ambient_c,
+        "minutes": minutes,
+        "half_life_min": half_life_min,
+    }
+    if any(isinstance(value, bool) or not math.isfinite(value) for value in values.values()):
+        raise ValueError("temperatures, minutes, and half_life_min must be finite")
     if minutes < 0:
         raise ValueError("minutes must be non-negative")
     if half_life_min <= 0:
@@ -139,6 +147,9 @@ def probability_below(threshold_c: float, mean_c: float, sigma_c: float) -> floa
     output is a probability rather than a hard hot/cold call. Calibration replaces the assumed
     sigma with the measured prediction error.
     """
+    values = {"threshold_c": threshold_c, "mean_c": mean_c, "sigma_c": sigma_c}
+    if any(isinstance(value, bool) or not math.isfinite(value) for value in values.values()):
+        raise ValueError("threshold_c, mean_c, and sigma_c must be finite")
     if sigma_c <= 0:
         raise ValueError("sigma_c must be positive")
     z_score = (threshold_c - mean_c) / sigma_c
