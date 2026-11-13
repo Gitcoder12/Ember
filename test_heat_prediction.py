@@ -104,11 +104,15 @@ def test_input_text_is_normalised() -> None:
         {"distance_km": 500},
         {"estimated_delivery_minutes": -5},
         {"pickup_delay_minutes": 10_000},
+        {"ambient_temperature_c": -31},
+        {"ambient_temperature_c": 56},
+        {"ambient_temperature_c": float("nan")},
         {"ambient_temperature_c": 200},
         {"packaging_type": "wooden"},
         {"restaurant_id": "bad id; DROP TABLE"},
         {"food_category": ""},
         {"distance_km": 30, "estimated_delivery_minutes": 5},
+        {"distance_km": 0.5, "estimated_delivery_minutes": 0},
     ],
 )
 def test_invalid_requests_are_rejected(overrides: dict[str, object]) -> None:
@@ -126,3 +130,8 @@ def test_settings_reject_inconsistent_thresholds() -> None:
 def test_non_text_category_is_rejected_not_coerced() -> None:
     with pytest.raises(ValidationError):
         make_request(food_category=123)
+
+
+def test_digit_led_food_category_matches_calibration_labels() -> None:
+    request = make_request(food_category="65 Chicken")
+    assert request.food_category == "65_chicken"

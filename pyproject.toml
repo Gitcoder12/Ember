@@ -42,15 +42,25 @@ line-length = 100
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "S", "SIM"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
 [tool.ruff.lint.per-file-ignores]
+# Pytest assertions are test checks, not production security assertions.
 "tests/*" = ["S101"]
-# Seeded PRNG for reproducible bootstrap/synthetic data; not used for security.
+"test_*.py" = ["S101"]
+"**/test_*.py" = ["S101"]
+# Seeded PRNG is used only for reproducible synthetic/bootstrap data, not security.
 "app/ml/*" = ["S311"]
+"calibrate.py" = ["S311"]
+"synthetic.py" = ["S311"]
+"**/calibrate.py" = ["S311"]
+"**/synthetic.py" = ["S311"]
 
 [tool.mypy]
 strict = true
 plugins = ["pydantic.mypy"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-addopts = "--cov=app --cov-report=term-missing --cov-fail-under=90"
+testpaths = ["."]
+addopts = "--cov=app --cov-report=term-missing --cov-fail-under=90 --import-mode=importlib"

@@ -52,6 +52,7 @@ def test_reported_uncertainty_is_never_optimistic(result) -> None:  # type: igno
     assert sigma is not None
     assert sigma >= result.rmse_c
     assert sigma >= (result.holdout_rmse_c or 0.0)
+    assert sigma >= 0.01
 
 
 def test_calibration_is_deterministic(synthetic_rows: list) -> None:
@@ -111,3 +112,14 @@ def test_synthetic_generator_validates_inputs() -> None:
         generate_observations(0, seed=1)
     with pytest.raises(ValueError, match="non-negative"):
         generate_observations(5, seed=1, noise_sd_c=-1)
+
+
+def test_near_zero_fit_uncertainty_remains_loadable(tmp_path: Path) -> None:
+    rows = generate_observations(120, seed=12, noise_sd_c=0.0)
+    result = calibrate(rows, seed=4, bootstrap_rounds=0)
+    payload = result.to_dict()
+
+    assert payload["temp_uncertainty_c"] >= 0.01
+    path = tmp_path / "near-perfect-calibration.json"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    assert load_parameters(path).temp_uncertainty_c >= 0.01

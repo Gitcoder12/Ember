@@ -18,7 +18,7 @@ use takeaway you collect yourself.
 packaging_type,food_category,ambient_c,initial_temp_c,exposure_minutes,measured_temp_c
 standard,biryani,31,74,38,56
 ```
-Packaging: insulated, foil, standard, paper, open_box, unknown. Categories are free text (lower-cased).
+Packaging must match the API's supported values: `insulated`, `foil`, `standard`, `paper`, `open_box`, or `unknown`. Unsupported packaging labels (for example, `vacuum bag`) are rejected rather than producing calibration keys the prediction API cannot consume. Food categories are lower-cased and spaces become underscores; use 1–50 characters beginning with a letter or digit and containing only letters, digits, underscores, or hyphens.
 
 ## How much data
 - At least 8 rows per packaging type is the minimum to fit it; **30+ is recommended**
@@ -30,4 +30,4 @@ Packaging: insulated, foil, standard, paper, open_box, unknown. Categories are f
 python -m app.ml.calibrate measurements.csv -o calibration.json
 EMBER_CALIBRATION_PATH=calibration.json uvicorn app.main:app
 ```
-Read the held-out error line. If it is not clearly below the assumed-defaults error, collect more data before trusting the output.
+Read the held-out error line. If it is not clearly below the assumed-defaults error, collect more data before trusting the output. The serialized `temp_uncertainty_c` has a 0.01 °C numerical floor so a near-perfect fit never writes a zero uncertainty that the API loader rejects. This floor is not a claim that the probe itself is accurate to 0.01 °C; instrument accuracy and field variation still dominate.
