@@ -6,10 +6,17 @@ and note the ambient temperature and the minutes between the two probes.
 
 import csv
 import math
+import re
 from collections import Counter
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
+from typing import get_args
+
+from app.models.schemas import PackagingType
+
+SUPPORTED_PACKAGING_TYPES = frozenset(get_args(PackagingType))
+FOOD_CATEGORY_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]{0,49}$")
 
 CSV_COLUMNS = (
     "packaging_type",
@@ -69,6 +76,10 @@ def parse_row(row: Mapping[str, str | None]) -> Observation:
     category = _normalize_label(row["food_category"])
     if not packaging or not category:
         raise ValueError("missing_label")
+    if packaging not in SUPPORTED_PACKAGING_TYPES:
+        raise ValueError("unsupported_packaging_type")
+    if not FOOD_CATEGORY_PATTERN.fullmatch(category):
+        raise ValueError("invalid_food_category")
     return Observation(packaging, category, ambient, initial, minutes, measured)
 
 
