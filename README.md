@@ -295,3 +295,15 @@ Ember is being developed incrementally. Start with the smallest useful component
 ## License
 
 MIT © 2026 DHARAVATH SATVIK
+
+
+---
+
+## AI-maintained project notes (secondary — 2026-11-13)
+
+This section supplements the maintainer-authored README above; it does not replace or certify the original claims.
+
+- Treat the current source tree and tests as the implementation source of truth. Planned calibration or prediction features are not shipped unless the code and reproducible tests demonstrate them.
+- Preserve original probe measurements and project data. Never replace them with synthetic samples; clearly label and isolate fixtures.
+- Verify sensor units, calibration assumptions, data collection protocol, model validation, and uncertainty before making predictive-performance claims.
+- See [MODEL_AUDIT_ROUTER.md](MODEL_AUDIT_ROUTER.md) for independent model review and data-preservation rules.
