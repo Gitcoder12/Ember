@@ -307,3 +307,15 @@ MIT © 2026 DHARAVATH SATVIK
 - [README quality checklist](README_QUALITY_CHECKLIST.md)
 - [Contribution guide](CONTRIBUTING.md)
 - [Agent skill map](SKILLS.md)
+
+## Understanding the project
+
+### In plain language
+
+An early food-delivery intelligence service that aims to estimate whether a meal may arrive warm and identify where heat is lost during delivery.
+
+### Technical and research view
+
+Document the actual architecture, module boundaries, input formats, transformations, outputs, dependencies and failure behavior. Do not describe proposed components as implemented.
+
+For future work, see [FEATURE_UPGRADE_PLAN.md](FEATURE_UPGRADE_PLAN.md), [ACTIVITY_LOG.md](ACTIVITY_LOG.md), [COMPANY_FIT.md](COMPANY_FIT.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
