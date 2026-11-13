@@ -62,5 +62,5 @@ strict = true
 plugins = ["pydantic.mypy"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["."]
 addopts = "--cov=app --cov-report=term-missing --cov-fail-under=90"
