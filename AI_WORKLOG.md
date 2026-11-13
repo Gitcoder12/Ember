@@ -3,6 +3,7 @@
 ## 2026-11-13 — Strict CI and cooling-model hardening
 
 ### Completed
+- Addressed all three fresh Codex review findings: reject positive-distance zero-minute ETAs, allow digit-led normalized food-category labels that the measurement parser already emits, and preserve X-Request-ID on generic 500 responses.
 - Replaced the accidental root package marker with the intended `app` package structure; removed the root `__init__.py` that caused mypy to identify `app.models.schemas` twice.
 - Restored canonical modules under `app/core`, `app/ml`, `app/services`, `app/api`, and `app/models`, including the measured-data calibration pipeline, cooling physics, request middleware, API routes, and refund assessment.
 - Corrected pytest discovery to include both the root regression suite and nested tests. Enabled pytest's `importlib` mode to avoid collisions between duplicate legacy test module names.
@@ -12,12 +13,13 @@
 - Expanded the model card with accepted input boundaries, uncertainty caveats, and explicit food-safety limitations.
 
 ### Validation
-- Exact validated PR head: `57beab8debdb3c0185d3c6f895a3cf90aaeaa2dd`.
-- GitHub Actions run: [43407784668](https://github.com/Gitcoder12/Ember/actions/runs/43407784668).
+- Exact validated PR head: `3a346d0fcc43855c14bd98f81d111318c250a746`.
+- GitHub Actions run: [43411528899](https://github.com/Gitcoder12/Ember/actions/runs/43411528899).
+- Fresh Codex review completed on the earlier validated implementation with three P2 findings; all three are fixed and the threads resolved.
 - Python 3.11: editable install, Ruff, Ruff format check, strict mypy, pytest all passed.
 - Python 3.12: editable install, Ruff, Ruff format check, strict mypy, pytest all passed.
-- Pytest: 105 passed on each version.
-- Coverage: 99.43% on each version (required minimum 90%).
+- Pytest: 108 tests collected and passed on each version.
+- Coverage: 99.44% on each version (required minimum 90%).
 - One Starlette/httpx deprecation warning remains; it does not fail the checks.
 
 ### Remaining
