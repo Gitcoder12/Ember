@@ -295,3 +295,27 @@ Ember is being developed incrementally. Start with the smallest useful component
 ## License
 
 MIT © 2026 DHARAVATH SATVIK
+
+---
+
+## Project handbook
+
+- [Activity log](ACTIVITY_LOG.md)
+- [Feature upgrade plan](FEATURE_UPGRADE_PLAN.md)
+- [Company and team fit](COMPANY_FIT.md)
+- [Beginner and technical README draft](README_ADDENDUM_DRAFT.md)
+- [README quality checklist](README_QUALITY_CHECKLIST.md)
+- [Contribution guide](CONTRIBUTING.md)
+- [Agent skill map](SKILLS.md)
+
+## Understanding the project
+
+### In plain language
+
+An early food-delivery intelligence service that aims to estimate whether a meal may arrive warm and identify where heat is lost during delivery.
+
+### Technical and research view
+
+Document the actual architecture, module boundaries, input formats, transformations, outputs, dependencies and failure behavior. Do not describe proposed components as implemented.
+
+For future work, see [FEATURE_UPGRADE_PLAN.md](FEATURE_UPGRADE_PLAN.md), [ACTIVITY_LOG.md](ACTIVITY_LOG.md), [COMPANY_FIT.md](COMPANY_FIT.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
