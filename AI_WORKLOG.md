@@ -37,3 +37,39 @@
 - Apply a 0.01 °C minimum numerical floor to calibrated temperature uncertainty, including serialized JSON and the human-readable report. This prevents a near-perfect fit from rounding uncertainty to zero and being rejected by the parameter loader.
 - Document supported packaging/category labels and clarify that the uncertainty floor is not a probe-accuracy guarantee.
 - Added regression tests for unsupported packaging/category labels and near-zero calibration uncertainty round-tripping through the parameter loader.
+
+## 2026-11-13 — Portfolio audit of current main and CI repair PR
+
+### Audit record
+- Audited main HEAD: `563a16718ce66d70250c6ed5ff6065b22677c0dc`.
+- Main recursive tree: 41 tracked files, root-level source and tests, one nested `tests/test_api.py`, package metadata, and no GitHub Actions workflow under `.github/workflows/`.
+- Recommendation: IMPROVE / strong applied-science candidate after package and measurement reproducibility are stabilized.
+
+### Confirmed main-branch findings
+- `pyproject.toml` declares `ember-calibrate = "app.ml.calibrate:main"`, but main contains `calibrate.py` at repository root and does not contain `app/ml/calibrate.py` or `app/ml/observations.py`. The root calibration module imports those missing package paths. The installed calibration command is therefore inconsistent with the committed package layout.
+- The README links to `docs/measurement-protocol.md` and `docs/NEXT.md`, while the tree contains `measurement-protocol.md` and `NEXT.md` at repository root.
+- A generated-looking path `mnt/user-data/outputs/Ember/app/ml/__init__.py` is tracked. Preserve it until its origin and contents are reviewed; do not delete it as cleanup without provenance and Git-history checks.
+- Main has a root `ci.yml`, not a workflow under `.github/workflows/`; GitHub Actions will not discover that file as a workflow.
+- Pytest is configured with `testpaths = ["tests"]`, while most test files are at repository root. The configured discovery path therefore excludes the root-level tests.
+- The README correctly distinguishes synthetic calibration verification from real-world food-temperature accuracy. Real probe data is still required before field-accuracy claims.
+
+### Existing repair work
+- [PR #2](https://github.com/Gitcoder12/Ember/pull/2) moves calibration/observation modules into the canonical `app/ml` package, adds strict CI, corrects test discovery, and adds AI_WORKLOG.
+- GitHub Actions run [43414162445](https://github.com/Gitcoder12/Ember/actions/runs/43414162445) associated with the current PR #2 head completed successfully.
+- The worklog contains earlier validated SHAs; re-check the exact current PR head before merge and ensure the final run is attached to that head.
+- PR #8 is documentation-focused. Avoid duplicating work already present in PR #2.
+
+### Verification
+- Inspected main README, pyproject, calibration module, app entry point, recursive tree, and open issues/PR metadata.
+- No local tests were run in this audit.
+- Main CI: NOT CONFIGURED at the expected GitHub Actions path.
+- PR #2 CI: completed successfully on the current PR head; this does not repair main until merge.
+- Independent final-head review: NOT COMPLETE.
+- Real probe calibration and field accuracy: NOT VERIFIED.
+
+### Next actions
+1. Review the exact current PR #2 diff and ensure all legacy test files are either included in discovery or intentionally retired with evidence.
+2. Remove or relocate the tracked generated-output artifact only after confirming it has no unique user data and preserving history.
+3. Resolve README links and align every command with the installed package.
+4. Obtain real, independently collected probe measurements and report held-out residuals; do not use synthetic tests as field validation.
+5. Keep ratings non-persistent and refund actions advisory until storage, authorization, and product policy are defined.
