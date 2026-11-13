@@ -74,8 +74,6 @@ def test_one_half_life_halves_the_gap() -> None:
     temp = cooled_temperature_c(initial_c=70, ambient_c=30, minutes=40, half_life_min=40)
     assert temp == pytest.approx(50.0)
 
-
-
 @pytest.mark.parametrize(
     ("ambient_c", "initial_c"),
     [(-30.0, 75.0), (55.0, 75.0)],
