@@ -73,3 +73,55 @@ def test_cooled_temperature_validates_inputs() -> None:
 def test_one_half_life_halves_the_gap() -> None:
     temp = cooled_temperature_c(initial_c=70, ambient_c=30, minutes=40, half_life_min=40)
     assert temp == pytest.approx(50.0)
+
+
+@pytest.mark.parametrize(
+    ("ambient_c", "initial_c"),
+    [(-30.0, 75.0), (55.0, 75.0)],
+)
+def test_extreme_supported_ambient_values_remain_between_initial_and_ambient(
+    ambient_c: float, initial_c: float
+) -> None:
+    result = cooled_temperature_c(
+        initial_c=initial_c, ambient_c=ambient_c, minutes=120, half_life_min=40
+    )
+    assert min(ambient_c, initial_c) <= result <= max(ambient_c, initial_c)
+
+
+def test_near_zero_exposure_is_continuous_with_initial_temperature() -> None:
+    result = arrival_temperature_c(exposure_minutes=1e-9, **BASE)
+    assert result == pytest.approx(BASE["initial_temp_c"], abs=1e-8)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("initial_c", float("nan")),
+        ("ambient_c", float("inf")),
+        ("minutes", float("nan")),
+        ("half_life_min", float("inf")),
+    ],
+)
+def test_non_finite_cooling_inputs_are_rejected(field: str, value: float) -> None:
+    inputs = {
+        "initial_c": 70.0,
+        "ambient_c": 30.0,
+        "minutes": 10.0,
+        "half_life_min": 40.0,
+    }
+    inputs[field] = value
+    with pytest.raises(ValueError, match="finite"):
+        cooled_temperature_c(**inputs)
+
+
+@pytest.mark.parametrize(
+    ("threshold", "mean", "sigma"),
+    [
+        (float("nan"), 55.0, 5.0),
+        (55.0, float("inf"), 5.0),
+        (55.0, 55.0, float("nan")),
+    ],
+)
+def test_probability_rejects_non_finite_inputs(threshold: float, mean: float, sigma: float) -> None:
+    with pytest.raises(ValueError, match="finite"):
+        probability_below(threshold, mean, sigma)

@@ -35,3 +35,12 @@ Real-data results go here once collected.
 - Packaging half-life CIs are conditional on the assumed category factors
 - Probabilities are only as good as the error band; recalibrate when packaging or seasons change
 - Never use the score to deny a refund. Customer reports go to review regardless
+
+
+## Input boundaries and uncertainty
+
+- The API accepts ambient temperature from -30 C through 55 C, delivery duration from 0 through 240 minutes, and pickup delay from 0 through 120 minutes. Values outside these documented input ranges are rejected by schema validation.
+- The numerical cooling functions reject non-finite temperatures, elapsed time, half-life and uncertainty values. Negative elapsed time and non-positive half-life or uncertainty are rejected explicitly.
+- Zero exposure returns the initial temperature; near-zero exposure approaches it continuously. Under the model assumptions, temperature approaches ambient monotonically and remains between the initial and ambient temperatures.
+- The uncertainty band is a model assumption until calibrated with representative, independently collected probe measurements. A synthetic-data test cannot establish field accuracy.
+- This model is not a food-safety control, certified thermometer, HACCP procedure, or substitute for applicable holding, transport, and temperature-measurement requirements. Never use a model estimate to certify food as safe.

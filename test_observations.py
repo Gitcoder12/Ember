@@ -40,6 +40,8 @@ def test_valid_row_is_parsed_and_labels_normalised() -> None:
         ({"measured_temp_c": "90"}, "measurement_implausible"),
         ({"measured_temp_c": "10"}, "measurement_implausible"),
         ({"packaging_type": "  "}, "missing_label"),
+        ({"packaging_type": "vacuum bag"}, "unsupported_packaging_type"),
+        ({"food_category": "food & beverage"}, "invalid_food_category"),
     ],
 )
 def test_bad_rows_are_rejected_with_reason(override: dict[str, str], reason: str) -> None:
