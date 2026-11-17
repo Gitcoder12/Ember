@@ -312,3 +312,23 @@ This section supplements the maintainer-authored README above; it does not repla
 ### Proposed local API walkthrough — open PR, not yet merged (2026-11-13)
 
 [PR #1](https://github.com/Gitcoder12/Ember/pull/1) proposes a local Swagger UI walkthrough for `POST /api/v1/predictions/heat-risk` and `POST /api/v1/ratings`. It explicitly states that a public hosted deployment has not been verified and that the request examples use synthetic demo values. Do not upload customer-identifying delivery data to a demo or claim real-world heat-prediction accuracy from synthetic calibration tests. Verify the API contract and current route behaviour on the exact PR head before merging.
+
+---
+
+## Engineering Audit & Handover — 2026-11-17
+
+**Reviewed commit:** `47bb5667028cb7e573f2b2927a537ade0197ee7e` (`main`). Static inspection covered heat prediction, refund triage, API routes, synthetic data, model card, and API tests; tests were not executed.
+
+### Confirmed findings
+- The model card explicitly states that the current calibration evidence is synthetic only and says it does not establish real-world accuracy. Preserve this limitation in all research and product claims.
+- The heat-risk output is a physics-based estimate under documented assumptions, not a food-safety verdict. The model card itself warns that its one-lump cooling model omits factors such as portion size, container shape, batching, reheating, and humidity.
+- The `POST /ratings` route explicitly states that persistence is not implemented; ratings are evaluated but not stored.
+- The refund engine sends a customer report of “cold” to refund review regardless of model corroboration. Preserve this customer-first safety rule.
+- API tests cover input boundaries and response contracts, but test execution and real-world calibration were not performed in this audit.
+
+### Next actions
+1. Collect consented, timestamped real temperature observations with packaging, food category, pickup delay, and delivery duration.
+2. Validate calibration and uncertainty on held-out real data across restaurants, seasons, and packaging types.
+3. Implement durable rating persistence and audit trails without allowing the model to overrule a customer report.
+
+**Verification status:** static source/test/model-card inspection only; no tests, live deployment, or real-data validation were run.
