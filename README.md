@@ -332,3 +332,31 @@ This section supplements the maintainer-authored README above; it does not repla
 3. Implement durable rating persistence and audit trails without allowing the model to overrule a customer report.
 
 **Verification status:** static source/test/model-card inspection only; no tests, live deployment, or real-data validation were run.
+
+
+---
+
+## Branch Activity & Development History
+
+**Audit date:** 2026-11-18 · **Comparison base:** `main`
+
+| Branch | Difference from `main` | Observed work / changed paths |
+|---|---:|---|
+| `chore/remove-emoji-glyphs-2026-11-13` | 5 ahead / 5 behind | README glyph cleanup |
+| `ci/activate-github-actions` | 42 / 5 | GitHub Actions/CI, API routes, configuration, middleware, ML calibration and observation modules, cooling/heat services, schemas and tests |
+| `dev` | 0 / 6 | No unique commits relative to current `main`; branch is behind |
+| `docs/local-api-demo-and-contract` | 2 / 5 | README additions for local API demo and contract |
+| `docs/portfolio-operating-kit-2026-11-13` | 4 / 5 | Activity log, company-fit notes, contributor guide, feature plan, README support docs and skills |
+| `docs/project-status-2026-11-16-ember` | 1 / 1 | Project status snapshot: `PROJECT_STATUS.md` |
+| `heat` | 0 / 6 | No unique commits relative to current `main`; branch is behind |
+
+### Open pull requests observed during this audit
+
+- [PR #9 — project status snapshot](https://github.com/Gitcoder12/Ember/pull/9)
+- [PR #8 — project roadmap, history and collaboration guides](https://github.com/Gitcoder12/Ember/pull/8)
+- [PR #6 — remove emoji glyphs](https://github.com/Gitcoder12/Ember/pull/6)
+- [PR #1 — local Swagger demo and API contract](https://github.com/Gitcoder12/Ember/pull/1)
+
+**Review note:** CI activation and the ML/API changes are substantial branch work, not proof of production readiness. Verify exact PR head/base, CI and runtime behavior before merging. No branch has been merged or deleted as part of this documentation work.
+
+**Verification boundary:** This is a Git metadata and changed-path audit, not a correctness or security certification.
