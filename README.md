@@ -332,3 +332,10 @@ This section supplements the maintainer-authored README above; it does not repla
 3. Implement durable rating persistence and audit trails without allowing the model to overrule a customer report.
 
 **Verification status:** static source/test/model-card inspection only; no tests, live deployment, or real-data validation were run.
+
+---
+
+## Examples Used
+- Predicting biryani temperature after a delayed delivery
+- Comparing insulated and standard food packaging
+- Estimating heat loss caused by pickup delays and extra delivery stops
