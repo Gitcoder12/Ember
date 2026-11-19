@@ -339,3 +339,27 @@ This section supplements the maintainer-authored README above; it does not repla
 - Predicting biryani temperature after a delayed delivery
 - Comparing insulated and standard food packaging
 - Estimating heat loss caused by pickup delays and extra delivery stops
+
+
+---
+
+## Comparison with Existing Open-Source Projects
+
+Ember is documented as a heat-aware food-delivery risk service. Its current v0.1 approach uses Newton's law of cooling with uncertainty bands and explicit calibration caveats, rather than claiming a trained machine-learning predictor. The following projects provide adjacent thermal-model and optimization foundations.
+
+| Project | Established focus | Relationship to Ember |
+|---|---|---|
+| [CoolProp](https://github.com/CoolProp/CoolProp) | Thermophysical property calculations for engineering applications | A scientific property library, not a food-delivery product; it can inform physical modelling where appropriate but does not provide Ember's order-stage workflow. |
+| [thermo](https://github.com/CalebBell/thermo) | Python chemical/thermodynamic property calculations | A broader thermodynamics toolkit; Ember's current model is a simpler cooling approximation with application-specific packaging and delay assumptions. |
+| [Google OR-Tools](https://github.com/google/or-tools) | Optimization tools for routing, scheduling and resource allocation | A mature optimization toolkit; Ember's planned delivery-platform integrations could use optimization, but its current core estimates temperature risk rather than solving fleet routing. |
+
+### Where Ember is different
+- **Temperature as a delivery objective:** the concept adds food heat retention to the usual time/logistics view of delivery.
+- **Pre-arrival risk estimate:** the current model estimates the chance of falling below a serving-temperature threshold using an uncertainty band.
+- **Actionable risk factors:** the service aims to surface preparation, pickup, travel, weather and packaging factors that can be acted on before delivery.
+
+### Where established projects are stronger
+CoolProp and thermo provide deeper physical-property coverage; OR-Tools provides mature optimization algorithms. They are enabling libraries, not direct food-delivery competitors. Ember's differentiator is the domain-specific order lifecycle and heat-risk interpretation, but its assumptions require real measurements.
+
+### Evidence and food-safety limitations
+Calibrate packaging/food cooling parameters with real probe measurements across representative meals, containers and ambient conditions. Report held-out prediction error and calibration, not only synthetic-data tests. The 57 °C reference is a food-safety threshold context, not a guarantee of customer-perceived quality. Do not automate safety or refund decisions without human review and validated policies. This is a modelling-scope comparison, not a validated prediction-accuracy claim.
